@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:woo_test/res/Theme.dart';
 
 import 'AppBindings.dart';
 import 'Views/SplashScreen.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'WooCommerce',
+      theme: AppTheme.primaryTheme,
       initialBinding: AppBindings(),
       home: SplashScreen(),
     );

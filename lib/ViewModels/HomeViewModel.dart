@@ -19,6 +19,7 @@ class HomeViewModel extends GetxController {
           scrollController.value.position.maxScrollExtent) {
         // At the bottom of the list, load more products
         print("At the Bottom of the List");
+        // productsController.getNextProducts();
       }
     });
     super.onInit();

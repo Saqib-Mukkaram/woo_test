@@ -23,7 +23,7 @@ class Products {
   final bool onSale;
   final bool purchaseable;
   final int totalSales;
-  final Categories category;
+  final ProductCategories category;
   final List<Tags> tags;
   final List<Images> images;
 
@@ -74,7 +74,7 @@ class Products {
       onSale: json['on_sale'],
       purchaseable: json['purchaseable'] ?? false,
       totalSales: json['total_sales'],
-      category: Categories.fromJson(json['categories'][0]),
+      category: ProductCategories.fromJson(json['categories'][0]),
       tags: List<Tags>.from(json['tags'].map((tag) => Tags.fromJson(tag))),
       images: List<Images>.from(json['images'].map((image) => Images.fromJson(image)))
     );

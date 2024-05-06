@@ -14,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    Future.delayed(Duration(seconds:2), () {
+    Future.delayed(Duration(seconds:0), () {
       Get.off(HomeScreen());
     });
 

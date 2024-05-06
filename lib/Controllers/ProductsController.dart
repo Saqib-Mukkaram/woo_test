@@ -7,8 +7,8 @@ import 'package:woo_test/Models/Products.dart';
 import 'package:woo_test/data/API.dart';
 
 class ProductController extends GetxController {
-  var _products = RxList<Products>();
-  var _categories = RxList<Categories>();
+  final _products = RxList<Products>();
+  final _categories = RxList<Categories>();
   var pageNum = 1;
   var totalPages = 11;
   var url = '/wp-json/wc/v3/products?page=';
@@ -29,15 +29,19 @@ class ProductController extends GetxController {
   Future getCategories() async {
     await ApiClient.get('/wp-json/wc/v3/products/categories').then((value) {
       List<dynamic> encodedCategories = jsonDecode(value.body);
-      encodedCategories.forEach((element) {
+      for (var element in encodedCategories) {
         var x = Categories.fromJson(element);
+      try {
+        kDebugMode ? print("category added without any errors") : null;
         _categories.add(x);
         _categories.refresh();
-      });
-    });
+      } catch (e) {
+        print("category not added ${element['name']}");
+      }
+    };
     //print the length
     print("Length of the categories: ${_categories.length}");
-  }
+  });}
 
   Future getProducts() async {
     await ApiClient.get('/wp-json/wc/v3/products?page=$pageNum').then((value) {
@@ -46,18 +50,18 @@ class ProductController extends GetxController {
       // //get the total pages
       // totalPages = header['x-wp-totalpages'];
       List<dynamic> encodedProducts = jsonDecode(value.body);
-      print(value.body);
-      encodedProducts.forEach((element) {
+      // print(value.body);
+      for (var element in encodedProducts) {
         if (element['status'] == 'publish') {
           var x = Products.fromJson(element);
           kDebugMode ? print("product added without any errors") : null;
-          print(element);
+          // print(element);
           _products.add(x);
           _products.refresh();
         } else {
           print("product not added ${element['name']}");
         }
-      });
+      }
     });
 
     print("Length of the products: ${_products.length}");
@@ -73,7 +77,7 @@ class ProductController extends GetxController {
           // print(product.toString());
           if (element['status'] == 'publish') {
             var x = Products.fromJson(element);
-            kDebugMode ? print("product added without any errors") : null;
+            // kDebugMode ? print("product added without any errors") : null;
             _products.add(x);
             _products.refresh();
           } else {

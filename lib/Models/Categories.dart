@@ -26,7 +26,7 @@ class Categories {
   final int id;
   final String name;
   final String slug;
-  final List<Images>image;
+  final List<Images> image;
 
   //constructor
   Categories(
@@ -41,8 +41,10 @@ class Categories {
       id: json['id'],
       name: json['name'],
       slug: json['slug'],
-      image:
-      [Images.fromJson(json['image']) ?? Images(id: 0, src: 'https://via.placeholder.com/150')],
+      image: [
+        Images.fromJson(json['image']) ??
+            Images(id: 0, src: 'https://via.placeholder.com/150')
+      ],
     );
   }
 }

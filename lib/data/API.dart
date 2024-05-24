@@ -45,6 +45,7 @@ class ApiClient extends getdart.GetxController {
     'Content-Type': 'application/json',
   };
 
+
   @override
   void onInit() {
     super.onInit();

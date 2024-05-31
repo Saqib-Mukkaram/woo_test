@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:woo_test/Views/Register/Register.dart';
 import 'package:woo_test/res/Theme.dart';
 import 'AppBindings.dart';
 import 'Views/SplashScreen.dart';

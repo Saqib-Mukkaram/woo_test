@@ -1,37 +1,37 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:woo_test/ViewModels/FavoritesViewModel.dart';
 
 class Favorites extends StatelessWidget {
-  const Favorites({super.key});
+  Favorites({super.key});
+
+  var FavoritesController = Get.find<FavoritesViewModel>();
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: ListView.builder(
-            itemCount: 20,
-            itemBuilder: (con, index) => ListTile(
+      child: ListView.builder(
+        itemCount: FavoritesController.favoritesList.length,
+        itemBuilder: (con, index) =>
+            ListTile(
+              title: Text("Item $index"),
+              subtitle: Text("Price: \$${index * 10}"),
+              leading: CachedNetworkImage(
+                imageUrl: FavoritesController.favoritesList[index].images[0]
+                    .src,
+                width: 75,
+              ),
+              trailing: IconButton(
+                onPressed: () {
+                  FavoritesController.removeProductFromFavorites(
+                      FavoritesController.favoritesList[index]);
 
-                  title: Text("Item $index"),
-
-
-                  subtitle:Text("Price: \$${index * 10}"),
-
-
-
-                      // Row(
-                      //   children: [
-                      //     IconButton(onPressed: () {}, icon: Icon(Icons.add)),
-                      //     Text("Qty: ${index * 2}"),
-                      //     IconButton(
-                      //         onPressed: () {},
-                      //         icon: Icon(Icons.remove_outlined)),
-                      //   ],
-                      // )
-
-                  leading: CircleAvatar(),
-                  trailing: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.delete),
-                  ),
-                )));
+                },
+                icon: Icon(Icons.delete),
+              ),
+            ),
+      ),
+    );
   }
 }

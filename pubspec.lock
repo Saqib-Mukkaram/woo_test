@@ -34,7 +34,7 @@ packages:
     source: hosted
     version: "2.1.1"
   cached_network_image:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: cached_network_image
       sha256: "28ea9690a8207179c319965c13cd8df184d5ee721ae2ce60f398ced1219cea1f"
@@ -417,7 +417,7 @@ packages:
     source: hosted
     version: "3.0.0"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       sha256: "087ce49c3f0dc39180befefc60fdb4acd8f8620e5682fe2476afd0b3688bb4af"
@@ -606,7 +606,7 @@ packages:
     source: hosted
     version: "7.0.0"
   sqflite:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: sqflite
       sha256: a43e5a27235518c03ca238e7b4732cf35eabe863a369ceba6cbefa537a66f16d
@@ -893,14 +893,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.5.0"
-  woocommerce_api:
+  wordpress_client:
     dependency: "direct main"
     description:
-      name: woocommerce_api
-      sha256: beaf62b549448767929167b9df5285fe2d04576f1b3fb151eb82d92c7cd66b56
+      name: wordpress_client
+      sha256: "0693e15f030c204a060bc832b293f76e2c301a5ecd2cb3484d1184a2a4503389"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0"
+    version: "8.4.10"
   xdg_directories:
     dependency: transitive
     description:

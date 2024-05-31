@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData primaryTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
+    colorScheme: ColorScheme.fromSeed(seedColor: Colors.white,
+    surface: Colors.white ),
     useMaterial3: true,
     applyElevationOverlayColor: false,
     appBarTheme: AppBarTheme(
@@ -14,9 +16,7 @@ class AppTheme {
       color: Colors.transparent,
       elevation: 0,
     ),
-
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-
       // elevation: 8,
       backgroundColor: Colors.white,
       unselectedItemColor: Colors.grey,

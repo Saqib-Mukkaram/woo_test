@@ -73,7 +73,7 @@ class Products {
       catalogVisibility: json['catalog_visibility'],
       description: json['description'],
       shortDescription: json['short_description'],
-      price: Utils.convertPrice(json['price']),
+      price: Utilities.convertPrice(json['price']),
       regularPrice: json['regular_price'] == ''
           ? 0.0
           : double.parse(json['regular_price']) ?? 0.0,

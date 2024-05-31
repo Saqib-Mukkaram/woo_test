@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:woo_test/Models/Categories.dart';
 import 'package:woo_test/Models/Products.dart';
 import 'package:woo_test/data/API.dart';
+import 'package:woo_test/res/Endpoints.dart';
 
 class ProductController extends GetxController {
   final _products = RxList<Products>();
@@ -33,7 +34,7 @@ class ProductController extends GetxController {
   Future getProductsByCategoryId(int id) async {
     _productsByCategory.clear();
     isLoading = true.obs;
-    ApiClient.get('/wp-json/wc/v3/products?category=$id').then((value) {
+    ApiClient.get('${EndPoints.PRODUCT_BY_CATEGORY}$id').then((value) {
       List<dynamic> encodedProducts = jsonDecode(value.body);
       for (var element in encodedProducts) {
         if (element['status'] == 'publish') {
@@ -51,7 +52,7 @@ class ProductController extends GetxController {
 
   Future getCategories() async {
     isLoading = true.obs;
-    await ApiClient.get('/wp-json/wc/v3/products/categories').then((value) {
+    await ApiClient.get(EndPoints.CATEGORIES).then((value) {
       List<dynamic> encodedCategories = jsonDecode(value.body);
       for (var element in encodedCategories) {
         var x = Categories.fromJson(element);
@@ -101,7 +102,7 @@ class ProductController extends GetxController {
     isLoading = true.obs;
     if (pageNum <= totalPages) {
       kDebugMode ? print("pageNumber : $pageNum") : null;
-      await ApiClient.get('/wp-json/wc/v3/products?page=$pageNum')
+      await ApiClient.get('${EndPoints.PRODUCTS_BY_PAGE}$pageNum')
           .then((value) {
         List<dynamic> encodedProducts = jsonDecode(value.body);
         encodedProducts.forEach((element) {

@@ -72,7 +72,11 @@ class HomeScreen extends StatelessWidget {
           () => viewModel.selectedIndex.value == 0
               ? FloatingActionButton(
                   onPressed: () {
-                    Get.to(Cart());
+                    Get.to(
+                      Cart(),
+
+                      // transition: Transition.topLevel,
+                    );
                   },
                   backgroundColor: Colors.white,
                   child: Icon(
@@ -259,6 +263,7 @@ class Home extends StatelessWidget {
                                       name: viewModel.products[index].name,
                                       price: viewModel.products[index].price,
                                       image: viewModel.products[index].images,
+                                      product: viewModel.products[index],
                                     ),
                                   ),
                                 );

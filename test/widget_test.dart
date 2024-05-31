@@ -11,6 +11,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:woo_test/main.dart';
 
 void main() {
+
+  test("",(){}); // This is a test that will always pass
+
+
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());

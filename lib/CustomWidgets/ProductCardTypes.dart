@@ -1,8 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:woo_test/Models/Images.dart';
+import 'package:woo_test/Models/Products.dart';
+import 'package:woo_test/Utils/Utils.dart';
+import 'package:woo_test/ViewModels/FavoritesViewModel.dart';
 
 class ProductCard extends StatelessWidget {
   final int id;
@@ -10,15 +14,19 @@ class ProductCard extends StatelessWidget {
   final double price;
   final List<Images> image;
   RxBool favoriteTapped;
+  final Products product;
 
   ProductCard(
       {super.key,
       RxBool? favoriteTapped,
+      required this.product,
       required this.id,
       required this.name,
       required this.price,
       required this.image})
       : favoriteTapped = favoriteTapped ?? RxBool(false);
+
+  var _favoritesController = Get.find<FavoritesViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +50,8 @@ class ProductCard extends StatelessWidget {
               children: [
                 Hero(
                   tag: id,
-                  child: Image.network(
-                    "${image[0].src}",
+                  child: CachedNetworkImage(
+                    imageUrl: "${image[0].src}",
                     fit: BoxFit.fitWidth,
                     width: sizeLimit.maxWidth,
                     height: 175,
@@ -80,6 +88,13 @@ class ProductCard extends StatelessWidget {
             child: IconButton(
               onPressed: () {
                 favoriteTapped.value = !favoriteTapped.value;
+                if (favoriteTapped.value) {
+                  _favoritesController.addProductToFavorites(product);
+                  Utilities.showSnackbar("Added ${name} to favorites.");
+                } else {
+                  _favoritesController.removeProductFromFavorites(product);
+                  Utilities.showSnackbar("Removed ${name} from favorites.");
+                }
               },
               icon: Obx(() => favoriteTapped.value
                   ? Icon(
@@ -204,7 +219,7 @@ class ProductCategoryList extends StatelessWidget {
                 tag: id,
                 child: Image.network(
                   "${image[0].src}",
-
+                  width: 75,
                   // height: 175,
                 ),
               ),

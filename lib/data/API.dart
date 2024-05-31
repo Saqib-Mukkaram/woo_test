@@ -4,6 +4,7 @@ import 'package:get/get.dart' as getdart;
 
 // import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:woo_test/res/Endpoints.dart';
 
 abstract class BaseNetworkAPI {
   static Future<dynamic> get(String url) {
@@ -44,7 +45,6 @@ class ApiClient extends getdart.GetxController {
             'ck_beab4bda51e49ef9f2a0d41da524896a09987ca4:cs_ff07b32527d778423f870d192eb67ef509dbce2d')),
     'Content-Type': 'application/json',
   };
-
 
   @override
   void onInit() {

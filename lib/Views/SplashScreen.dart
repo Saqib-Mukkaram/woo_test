@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:woo_test/Controllers/WpController.dart';
 import 'package:woo_test/Views/Home.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -10,21 +11,22 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     // TODO: implement initState
-    Future.delayed(Duration(seconds:0), () {
+    Future.delayed(Duration(seconds: 2), () async {
+      // Get.find<WpController>().fetchData();
       Get.off(HomeScreen());
     });
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("Splash Screen"),
+        child: Image.asset('assets/imgs/logo.webp'),
       ),
     );
   }

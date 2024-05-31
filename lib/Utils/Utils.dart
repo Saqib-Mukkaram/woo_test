@@ -1,4 +1,8 @@
-class Utils {
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+class Utilities {
   static double convertPrice(String json) {
     String priceString = json; // Assuming price comes as a string first
     double price;
@@ -16,33 +20,28 @@ class Utils {
     }
   }
 
-  // static showSnackbar(String message) {
-  //   Get.showSnackbar(GetSnackBar(
-  //     borderRadius: 16,
-  //     boxShadows: [
-  //       BoxShadow(
-  //           color: Colors.grey.withOpacity(0.2),
-  //           spreadRadius: 5,
-  //           blurRadius: 7,
-  //           offset: Offset(0, 1))
-  //     ],
-  //     backgroundColor: Colors.white,
-  //     padding: EdgeInsets.all(8),
-  //     animationDuration: Duration(seconds: 1),
-  //     forwardAnimationCurve: Curves.fastEaseInToSlowEaseOut,
-  //     reverseAnimationCurve: Curves.easeOut,
-  //     margin: EdgeInsets.only(bottom: 60, left: 20, right: 20),
-  //     messageText: Obx(
-  //       () => Text(
-  //         addedToCart.value
-  //             ? "Added ${product.name} to cart."
-  //             : "Removed ${product.name}from cart.",
-  //         textAlign: TextAlign.center,
-  //       ),
-  //     ),
-  //     isDismissible: true,
-  //     duration: Duration(seconds: 3),
-  //   ));
-  //   addedToCart.value = !addedToCart.value;
-  // }
+  static showSnackbar(String message) {
+    Get.showSnackbar(GetSnackBar(
+      borderRadius: 16,
+      boxShadows: [
+        BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: Offset(0, 1))
+      ],
+      backgroundColor: Colors.white,
+      padding: EdgeInsets.all(8),
+      animationDuration: Duration(seconds: 1),
+      forwardAnimationCurve: Curves.fastEaseInToSlowEaseOut,
+      reverseAnimationCurve: Curves.easeOut,
+      margin: EdgeInsets.only(bottom: 60, left: 20, right: 20),
+      messageText: Text(
+        message,
+        textAlign: TextAlign.center,
+      ),
+      isDismissible: true,
+      duration: Duration(milliseconds: 1500),
+    ));
+  }
 }

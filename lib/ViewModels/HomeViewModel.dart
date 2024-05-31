@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:woo_test/Controllers/ProductsController.dart';
 import 'package:woo_test/Models/Categories.dart';
 import 'package:woo_test/Models/Products.dart';
-import 'package:woocommerce_api/woocommerce_api.dart';
+// import 'package:woocommerce_api/woocommerce_api.dart';
 
 class HomeViewModel extends GetxController {
   ProductController productsController = Get.find();
@@ -39,7 +39,13 @@ class HomeViewModel extends GetxController {
     }
   }
 
-  RxList<Products> get products => productsController.products;
+  RxList<Products> get products {
+    refresh();
+    return productsController.products;
+  }
 
-  RxList<Categories> get categories => productsController.categories;
+  RxList<Categories> get categories {
+    refresh();
+    return productsController.categories;
+  }
 }

@@ -10,7 +10,8 @@ class CardShimmer extends StatelessWidget {
       child: LayoutBuilder(
         builder: (con, sizeLimit) {
           return Container(
-            constraints: BoxConstraints(maxWidth: sizeLimit.maxWidth,minHeight: sizeLimit.maxHeight),
+            constraints: BoxConstraints(
+                maxWidth: sizeLimit.maxWidth, minHeight: sizeLimit.maxHeight),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
@@ -27,7 +28,6 @@ class CardShimmer extends StatelessWidget {
                   width: sizeLimit.maxWidth,
                   height: sizeLimit.maxHeight,
                 ),
-
               ],
             ),
           );
@@ -41,7 +41,6 @@ class CardShimmer extends StatelessWidget {
       ]),
       direction: ShimmerDirection.rtl,
       loop: 5,
-
     );
   }
 }

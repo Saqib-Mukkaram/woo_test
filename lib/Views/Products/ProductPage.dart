@@ -4,11 +4,14 @@ import 'package:woo_test/Models/Products.dart';
 
 // import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:woo_test/ViewModels/CartViewModel.dart';
 
 class ProductPage extends StatelessWidget {
   final Products product;
 
   ProductPage({super.key, required this.product});
+
+  final _cartViewModel = Get.find<CartViewModel>();
 
   var addedToCart = false.obs;
   var favoriteTapped = false.obs;
@@ -141,6 +144,9 @@ class ProductPage extends StatelessWidget {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          _cartViewModel.cartItems.containsKey(product)
+              ? _cartViewModel.removeItem(product)
+              : _cartViewModel.addItem(product);
           Get.showSnackbar(GetSnackBar(
             borderRadius: 16,
             boxShadows: [

@@ -6,6 +6,7 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:woo_test/Models/Images.dart';
 import 'package:woo_test/Models/Products.dart';
 import 'package:woo_test/Utils/Utils.dart';
+import 'package:woo_test/ViewModels/CartViewModel.dart';
 import 'package:woo_test/ViewModels/FavoritesViewModel.dart';
 
 class ProductCard extends StatelessWidget {
@@ -14,19 +15,23 @@ class ProductCard extends StatelessWidget {
   final double price;
   final List<Images> image;
   RxBool favoriteTapped;
+  RxBool addedToCart;
   final Products product;
 
   ProductCard(
       {super.key,
+      RxBool? addedToCart,
       RxBool? favoriteTapped,
       required this.product,
       required this.id,
       required this.name,
       required this.price,
       required this.image})
-      : favoriteTapped = favoriteTapped ?? RxBool(false);
+      : favoriteTapped = favoriteTapped ?? RxBool(false),
+        addedToCart = addedToCart ?? RxBool(false);
 
   var _favoritesController = Get.find<FavoritesViewModel>();
+  var _cartViewModel = Get.find<CartViewModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +57,7 @@ class ProductCard extends StatelessWidget {
                   tag: id,
                   child: CachedNetworkImage(
                     imageUrl: "${image[0].src}",
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.contain,
                     width: sizeLimit.maxWidth,
                     height: 175,
                   ),
@@ -104,6 +109,37 @@ class ProductCard extends StatelessWidget {
                   : Icon(
                       Icons.favorite_border,
                     )),
+            ),
+          ),
+          Positioned(
+            top: 5,
+            right: 5,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: IconButton(
+                onPressed: () {
+                  //Add to Cart
+                  if (_cartViewModel.cartItems.containsKey(product)) {
+                    _cartViewModel.cartItems[product] =
+                        _cartViewModel.cartItems[product]! + 1;
+                    addedToCart.value = true;
+                  } else {
+                    //remove from the cart
+                    _cartViewModel.cartItems.remove(product);
+                    addedToCart.value = false;
+                  }
+                },
+                icon: Obx(() => addedToCart.value
+                    ? Icon(
+                        Icons.remove_shopping_cart,
+                        color: Colors.blue,
+                      )
+                    : Icon(
+                        Icons.add_shopping_cart,
+                      )),
+              ),
             ),
           ),
         ]);

@@ -2,28 +2,64 @@ import 'package:get/get.dart';
 import 'package:woo_test/Models/Products.dart';
 
 class CartViewModel extends GetxController {
-  var _cartItems = <Map<Products, int>>[].obs; // <Products,Quantity
+  var _cartItems = <Products, int>{}.obs; // <Products,Quantity
   var _totalPrice = 0.0.obs;
 
-  //Getter for _cartItems
-  RxList<Map<Products, int>> get cartItems => _cartItems;
+  //Getter for the Cart Items
+  RxMap<Products, int> get cartItems => _cartItems;
 
   Rx<double> get totalPrice => _totalPrice;
 
-  //Calculate the Total Price
+  //calculate Total Price
   void calculateTotalPrice() {
-    double total = 0.0;
-    for (var item in _cartItems) {
-      item.forEach((key, value) {
-        total += key.price * value;
-      });
-    }
-    _totalPrice.value = total;
+    _totalPrice.value = 0.0;
+    _cartItems.forEach((key, value) {
+      _totalPrice.value += key.price * value;
+    });
   }
 
-  //remove the item from the cart
-  void removeItem(Map<Products, int> item) {
-    _cartItems.remove(item);
+  //Add Item to Cart
+  void addItem(Products product) {
+    if (_cartItems.containsKey(product)) {
+      _cartItems[product] = _cartItems[product]! + 1;
+    } else {
+      _cartItems[product] = 1;
+    }
+    calculateTotalPrice();
+    refresh();
+  }
+
+  //Remove Item from Cart
+  void removeItem(Products product) {
+    if (_cartItems.containsKey(product)) {
+      if (_cartItems[product] == 1) {
+        _cartItems.remove(product);
+      } else {
+        _cartItems[product] = _cartItems[product]! - 1;
+      }
+    }
+    calculateTotalPrice();
+    refresh();
+  }
+
+  //Increase Quantity
+  void increaseQuantity(Products product) {
+    if (_cartItems.containsKey(product)) {
+      _cartItems[product] = _cartItems[product]! + 1;
+    }
+    calculateTotalPrice();
+    refresh();
+  }
+
+  //Decrease Quantity
+  void decreaseQuantity(Products product) {
+    if (_cartItems.containsKey(product)) {
+      if (_cartItems[product] == 1) {
+        _cartItems.remove(product);
+      } else {
+        _cartItems[product] = _cartItems[product]! - 1;
+      }
+    }
     calculateTotalPrice();
     refresh();
   }

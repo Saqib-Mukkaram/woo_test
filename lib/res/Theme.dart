@@ -3,10 +3,21 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData primaryTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.white,
-    surface: Colors.white ),
+    colorScheme:
+        ColorScheme.fromSeed(seedColor: Colors.white, surface: Colors.white),
     useMaterial3: true,
     applyElevationOverlayColor: false,
+
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: Colors.white,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+      ),
+    ),
     appBarTheme: AppBarTheme(
       surfaceTintColor: Colors.white,
       foregroundColor: Colors.black,

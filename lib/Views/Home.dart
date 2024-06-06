@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:get/get.dart';
 import 'package:woo_test/Controllers/wooCommerceController.dart';
 import 'package:woo_test/CustomWidgets/CustomBottomNavigationBar.dart';
 import 'package:woo_test/CustomWidgets/ProductCardTypes.dart';
+import 'package:woo_test/CustomWidgets/Shimmers/CardListViewShimmer.dart';
 import 'package:woo_test/CustomWidgets/Shimmers/CardShimmer.dart';
 import 'package:woo_test/CustomWidgets/Shimmers/CategoryShimmer.dart';
 import 'package:woo_test/ViewModels/HomeViewModel.dart';
@@ -39,7 +42,7 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           title: Obx(() => viewModel.selectedIndex.value == 0
               ? Text(
-                  "Home",
+                  "My Vape Shop",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                 )
               : viewModel.selectedIndex.value == 1
@@ -104,12 +107,331 @@ class Home extends StatelessWidget {
         },
         child: Center(
           child: Container(
-            constraints:
-                BoxConstraints(maxHeight: size.height, maxWidth: size.width),
-            child: CustomScrollView(
-              controller: viewModel.scrollController.value,
+              constraints:
+                  BoxConstraints(maxHeight: size.height, maxWidth: size.width),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    FutureBuilder(
+                      future: Future.delayed(
+                        Duration(seconds: 10),
+                      ),
+                      builder: (con, snap) {
+                        if (snap.connectionState == ConnectionState.waiting) {
+                          return Center(
+                            child: Container(
+                                width: double.infinity,
+                                height: 300,
+                                child: CardShimmer()),
+                          );
+                        } else {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ImageSlideshow(
+                                width: double.infinity,
+                                height: 300,
+                                isLoop: true,
+                                // initialPage: 0
+                                autoPlayInterval: 2000,
+                                indicatorColor: Colors.blue,
+                                indicatorBackgroundColor: Colors.grey,
+                                children: [
+                                  CachedNetworkImage(
+                                      imageUrl:
+                                          viewModel.featuredProductsWidgets[0]),
+                                  CachedNetworkImage(
+                                      imageUrl:
+                                          viewModel.featuredProductsWidgets[1]),
+
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Seach By Category",style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+                          ),),
+                        ),
+                      ],
+                    ),
+                    //Categoiries
+                    Container(
+                        constraints: BoxConstraints(
+                            maxHeight: 165, maxWidth: size.width),
+                        child: FutureBuilder(
+                          future: viewModel.productsController.getCategories(),
+                          builder: (con, snap) {
+                            // print('Product category ids: ${viewModel.categories.map((e) => e.id).toList()}');
+                            if (snap.connectionState ==
+                                ConnectionState.waiting) {
+                              return ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 4,
+                                  itemBuilder: (con, index) => Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          CategoryShimmer(),
+                                        ],
+                                      ));
+                            } else {
+                              return ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: viewModel.categories.length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        // print("Category ID: ${viewModel.categories}")
+                                        Get.to(CategoriesPage(
+                                          category:
+                                              viewModel.categories[index].name,
+                                          id: viewModel.categories[index].id,
+                                        ));
+                                      },
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            height: 100,
+                                            width: 100,
+                                            margin: EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.2),
+                                                    spreadRadius: 3,
+                                                    blurRadius: 5,
+                                                    offset: const Offset(0,
+                                                        -1), // changes position of shadow
+                                                  ),
+                                                ],
+                                                color: Colors.grey,
+                                                borderRadius:
+                                                    BorderRadius.circular(50)),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              child: CachedNetworkImage(
+                                                imageUrl: viewModel
+                                                    .categories[index]
+                                                    .image[0]
+                                                    .src,
+                                                fit: BoxFit.fitWidth,
+                                                width: 50,
+                                              ),
+                                            ),
+                                          ),
+                                          //Name of the Category
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              maxLines: 1,
+                                              viewModel.categories[index].name,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  });
+                            }
+                          },
+                        )),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Products",style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold
+                          ),),
+                        ),
+                      ],
+                    ),
+                    FutureBuilder(
+                      future: viewModel.productsController.getNextProducts(),
+                      builder: (con, snap) {
+                        if (snap.connectionState == ConnectionState.waiting) {
+                          return Center(child: CardListViewShimmer());
+                        } else {
+                          if (viewModel.products.isEmpty) {
+                            return Center(
+                              child: Text("No Products Found"),
+                            );
+                          }
+                          return Container(
+                            height: 300,
+                            child: Obx(
+                              () => ListView.builder(
+                                  controller: viewModel.scrollController.value,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: viewModel.products.length,
+                                  itemBuilder: (con, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Get.to(
+                                            opaque: false,
+                                            ProductPage(
+                                              product:
+                                                  viewModel.products[index],
+                                            ),
+                                            transition:
+                                                Transition.circularReveal,
+                                            duration:
+                                                Duration(milliseconds: 1000),
+                                          );
+                                        },
+                                        child: ProductCard(
+                                          id: viewModel.products[index].id,
+                                          name: viewModel.products[index].name,
+                                          price:
+                                              viewModel.products[index].price,
+                                          image:
+                                              viewModel.products[index].images,
+                                          product: viewModel.products[index],
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    //Second Products
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Products",style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold
+                          ),),
+                        ),
+                      ],
+                    ),
+
+                    FutureBuilder(
+                      future: viewModel.productsController.getNextProducts(),
+                      builder: (con, snap) {
+                        if (snap.connectionState == ConnectionState.waiting) {
+                          // return SliverToBoxAdapter(
+                          //   child: Center(
+                          //     child: CircularProgressIndicator(),
+                          //   ),
+                          // );
+                          return Center(
+                            child: CardListViewShimmer(),
+                          );
+                        } else {
+                          if (viewModel.products.isEmpty) {
+                            return Center(
+                              child: Text("No Products Found"),
+                            );
+                          }
+                          return Container(
+                            height: 300,
+                            child: ListView.builder(
+                                // controller: viewModel.scrollController.value,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: viewModel.products.length,
+                                itemBuilder: (con, index) => Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Get.to(
+                                              opaque: false,
+                                              ProductPage(
+                                                product:
+                                                    viewModel.products[index],
+                                              ),
+                                              transition:
+                                                  Transition.circularReveal,
+                                              duration:
+                                                  Duration(milliseconds: 1000));
+                                        },
+                                        child: ProductCard(
+                                          id: viewModel.products[index].id,
+                                          name: viewModel.products[index].name,
+                                          price:
+                                              viewModel.products[index].price,
+                                          image:
+                                              viewModel.products[index].images,
+                                          product: viewModel.products[index],
+                                        ),
+                                      ),
+                                    )),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              )),
+        ),
+      ),
+    );
+  }
+}
+/*
+CustomScrollView(
               physics: BouncingScrollPhysics(),
               slivers: <Widget>[
+                SliverToBoxAdapter(
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: FutureBuilder(
+                        future:viewModel.products.isEmpty ? Future.delayed(Duration(seconds: 6)) : null,
+                        builder: (con, snap) {
+
+                          if (snap.connectionState == ConnectionState.waiting) {
+                            return Center(
+                              child: Container(
+                                  width: double.infinity,
+                                  height: 300,
+                                  child: CardShimmer()),
+                            );
+                          } else {
+
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: ImageSlideshow(
+                                width: double.infinity,
+                                height: 300,
+                                isLoop: true,
+                                // initialPage: 0
+                                autoPlayInterval: 2000,
+                                indicatorColor: Colors.blue,
+                                indicatorBackgroundColor: Colors.grey,
+                                children: [
+                                  CachedNetworkImage(imageUrl: viewModel.featuredProductsWidgets[0]),
+                                  CachedNetworkImage(imageUrl: viewModel.featuredProductsWidgets[1]),
+                                  CachedNetworkImage(imageUrl: viewModel.featuredProductsWidgets[2]),
+                                  CachedNetworkImage(imageUrl: viewModel.featuredProductsWidgets[3]),
+                                ],
+
+                              ),
+                            );
+                          }
+                        },
+                      )),
+                ),
+                //Categories
                 SliverList(
                     delegate: SliverChildListDelegate([
                   SizedBox(
@@ -215,6 +537,69 @@ class Home extends StatelessWidget {
                     ],
                   )
                 ])),
+                //Products
+                FutureBuilder(
+                  future: viewModel.productsController.getNextProducts(),
+                  builder: (con, snap) {
+                    if (snap.connectionState == ConnectionState.waiting) {
+                      return SliverToBoxAdapter(
+                        child: Center(child: CardListViewShimmer()),
+                      );
+                    } else {
+                      if (viewModel.products.isEmpty) {
+                        return SliverToBoxAdapter(
+                          child: Center(
+                            child: Text("No Products Found"),
+                          ),
+                        );
+                      }
+                      return SliverToBoxAdapter(
+                        child: Container(
+                          height: 300,
+                          child: Obx(
+                            () => ListView.builder(
+                                controller: viewModel.scrollController.value,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: viewModel.products.length,
+                                itemBuilder: (con, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Get.to(
+                                          opaque: false,
+                                          ProductPage(
+                                            product: viewModel.products[index],
+                                          ),
+                                          transition: Transition.circularReveal,
+                                          duration:
+                                              Duration(milliseconds: 1000),
+                                        );
+                                      },
+                                      child: ProductCard(
+                                        id: viewModel.products[index].id,
+                                        name: viewModel.products[index].name,
+                                        price: viewModel.products[index].price,
+                                        image: viewModel.products[index].images,
+                                        product: viewModel.products[index],
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
+                //Second Products
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Products"),
+                  ),
+                ),
+
                 FutureBuilder(
                   future: viewModel.productsController.getNextProducts(),
                   builder: (con, snap) {
@@ -226,7 +611,7 @@ class Home extends StatelessWidget {
                       // );
                       return SliverToBoxAdapter(
                         child: Center(
-                          child: SizedBox(),
+                          child: CardListViewShimmer(),
                         ),
                       );
                     } else {
@@ -237,71 +622,67 @@ class Home extends StatelessWidget {
                           ),
                         );
                       }
-                      return Obx(() => SliverGrid(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 0.63,
-                            ),
-                            delegate: SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Get.to(
-                                          opaque: false,
-                                          ProductPage(
-                                            product: viewModel.products[index],
-                                          ),
-                                          transition: Transition.circularReveal,
-                                          duration:
-                                              Duration(milliseconds: 1000));
-                                    },
-                                    child: ProductCard(
-                                      id: viewModel.products[index].id,
-                                      name: viewModel.products[index].name,
-                                      price: viewModel.products[index].price,
-                                      image: viewModel.products[index].images,
-                                      product: viewModel.products[index],
+                      return SliverToBoxAdapter(
+                        child: Container(
+                          height: 300,
+                          child: ListView.builder(
+                              // controller: viewModel.scrollController.value,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: viewModel.products.length,
+                              itemBuilder: (con, index) => Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Get.to(
+                                            opaque: false,
+                                            ProductPage(
+                                              product:
+                                                  viewModel.products[index],
+                                            ),
+                                            transition:
+                                                Transition.circularReveal,
+                                            duration:
+                                                Duration(milliseconds: 1000));
+                                      },
+                                      child: ProductCard(
+                                        id: viewModel.products[index].id,
+                                        name: viewModel.products[index].name,
+                                        price: viewModel.products[index].price,
+                                        image: viewModel.products[index].images,
+                                        product: viewModel.products[index],
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                              childCount: viewModel.products.length,
-                            ),
-                          ));
+                                  )),
+                        ),
+                      );
                     }
                   },
                 ),
-                Obx(() {
-                  // Show loading indicator at the bottom
-                  if (viewModel.productsController.isLoading.value) {
-                    return SliverToBoxAdapter(
-                      child: Center(
-                        child: Padding(
-                            padding: EdgeInsets.all(16.0),
-                            child: GridView.builder(
-                                shrinkWrap: true,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2),
-                                itemCount: 2,
-                                itemBuilder: (con, index) => Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: CardShimmer(),
-                                    ))),
-                      ),
-                    );
-                  } else {
-                    return SliverToBoxAdapter(child: SizedBox.shrink());
-                  }
-                }),
+                // Obx(() {
+                //   // Show loading indicator at the bottom
+                //   if (viewModel.productsController.isLoading.value) {
+                //     return SliverToBoxAdapter(
+                //       child: Center(
+                //         child: Padding(
+                //             padding: EdgeInsets.all(16.0),
+                //             child: GridView.builder(
+                //                 shrinkWrap: true,
+                //                 gridDelegate:
+                //                     SliverGridDelegateWithFixedCrossAxisCount(
+                //                         crossAxisCount: 2),
+                //                 itemCount: 2,
+                //                 itemBuilder: (con, index) => Padding(
+                //                       padding: const EdgeInsets.all(8.0),
+                //                       child: CardShimmer(),
+                //                     ))),
+                //       ),
+                //     );
+                //   } else {
+                //     return SliverToBoxAdapter(child: SizedBox.shrink());
+                //   }
+                // }),
               ],
             ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+
+
+* */

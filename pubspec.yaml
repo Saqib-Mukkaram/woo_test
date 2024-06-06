@@ -47,6 +47,7 @@ dependencies:
   path: ^1.9.0
   cached_network_image: ^3.3.1
   wordpress_client: ^8.4.10
+  flutter_image_slideshow: ^0.1.6
 
 dev_dependencies:
   flutter_test:

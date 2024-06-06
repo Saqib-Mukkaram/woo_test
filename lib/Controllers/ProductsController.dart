@@ -28,6 +28,7 @@ class ProductController extends GetxController {
 
   @override
   void onInit() {
+    getNextProducts();
     super.onInit();
   }
 

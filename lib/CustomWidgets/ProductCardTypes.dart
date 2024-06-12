@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:woo_test/Models/Images.dart';
 import 'package:woo_test/Models/Products.dart';
 import 'package:woo_test/Utils/Utils.dart';
@@ -40,7 +38,7 @@ class ProductCard extends StatelessWidget {
       builder: (con, sizeLimit) {
         return Stack(children: [
           Container(
-            constraints: BoxConstraints(maxWidth: sizeLimit.maxHeight),
+            constraints: BoxConstraints(maxWidth: 200),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),

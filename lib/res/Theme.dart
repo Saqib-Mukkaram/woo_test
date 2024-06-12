@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static ThemeData primaryTheme = ThemeData(
-    scaffoldBackgroundColor: Colors.white,
+    scaffoldBackgroundColor: Color(0xffFDFDFD),
+    searchBarTheme: SearchBarThemeData(
+      backgroundColor: WidgetStateProperty.all(Colors.white),
+      surfaceTintColor: WidgetStateProperty.all(Colors.white),
+      shape: WidgetStateProperty.all(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+      elevation: WidgetStateProperty.all(4),
+    ),
     colorScheme:
         ColorScheme.fromSeed(seedColor: Colors.white, surface: Colors.white),
     useMaterial3: true,
     applyElevationOverlayColor: false,
-
     bottomSheetTheme: BottomSheetThemeData(
       backgroundColor: Colors.white,
       elevation: 0,

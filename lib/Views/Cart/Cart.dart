@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:woo_test/CustomWidgets/CartCard.dart';
+// import 'package:woo_test/CustomWidgets/CartCard.dart';
 import 'package:woo_test/ViewModels/CartViewModel.dart';
 
 class Cart extends StatelessWidget {
@@ -56,8 +56,7 @@ class Cart extends StatelessWidget {
                 : ListView.builder(
                     itemCount: _cartViewModel.cartItems.length + 1,
                     itemBuilder: (con, index) => _cartViewModel
-                                    .cartItems.length
-                                 ==
+                                .cartItems.length ==
                             index
                         ? SizedBox(
                             height: 120,
@@ -220,10 +219,12 @@ class Cart extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-             Obx(()=> Text(
-                "Total Price: ${_cartViewModel.totalPrice}",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),),
+              Obx(
+                () => Text(
+                  "Total Price: ${_cartViewModel.totalPrice}",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
               ElevatedButton(
                   onPressed: () {},
                   child: Text(

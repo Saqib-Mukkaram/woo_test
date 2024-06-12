@@ -1,12 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:get/get.dart';
-import 'package:woo_test/Controllers/wooCommerceController.dart';
 import 'package:woo_test/CustomWidgets/CustomBottomNavigationBar.dart';
 import 'package:woo_test/CustomWidgets/ProductCardTypes.dart';
 import 'package:woo_test/CustomWidgets/Shimmers/CardListViewShimmer.dart';
-import 'package:woo_test/CustomWidgets/Shimmers/CardShimmer.dart';
 import 'package:woo_test/CustomWidgets/Shimmers/CategoryShimmer.dart';
 import 'package:woo_test/ViewModels/HomeViewModel.dart';
 import 'package:woo_test/Views/Account/Accounts.dart';
@@ -15,7 +12,6 @@ import 'package:woo_test/Views/Categories/CategoriesPage.dart';
 import 'package:woo_test/Views/Favorites/Favorites.dart';
 
 import 'Products/ProductPage.dart';
-import 'Settings/Settings.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -39,23 +35,46 @@ class HomeScreen extends StatelessWidget {
         bottomNavigationBar: CustomBottomNavigationBarWidget(
           selectedIndex: viewModel.selectedIndex,
         ),
+        drawer: Drawer(
+          width: Get.width / 2,
+          child: ListView(
+            children: [
+              DrawerHeader(
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundImage: CachedNetworkImageProvider(
+                          "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "John Doe",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text("Josh"),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
         appBar: AppBar(
-          title: Obx(() => viewModel.selectedIndex.value == 0
-              ? Text(
-                  "My Vape Shop",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-                )
-              : viewModel.selectedIndex.value == 1
-                  ? Text(
-                      " Favorites",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-                    )
-                  : Text(
-                      "Accounts",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-                    )),
+          leadingWidth: 50,
+          title: Image.asset(
+            "assets/imgs/logo_sample.png",
+            fit: BoxFit.contain,
+            // width: 100,
+            height: 40,
+          ),
           centerTitle: true,
           // leading: IconButton(
           //   icon: Icon(Icons.menu),
@@ -112,61 +131,95 @@ class Home extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    FutureBuilder(
-                      future: Future.delayed(
-                        Duration(seconds: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 16, right: 16, top: 8, bottom: 8),
+                      child: SearchBar(
+                        hintText: "Search any Product",
+                        onChanged: (val) {
+                          print("Search");
+                          //TODO:
+                          //this should be used with Database or any storage for Search.
+                        },
+                        keyboardType: TextInputType.text,
+                        leading: Icon(Icons.search_rounded),
                       ),
-                      builder: (con, snap) {
-                        if (snap.connectionState == ConnectionState.waiting) {
-                          return Center(
-                            child: Container(
-                                width: double.infinity,
-                                height: 300,
-                                child: CardShimmer()),
-                          );
-                        } else {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ImageSlideshow(
-                                width: double.infinity,
-                                height: 300,
-                                isLoop: true,
-                                // initialPage: 0
-                                autoPlayInterval: 2000,
-                                indicatorColor: Colors.blue,
-                                indicatorBackgroundColor: Colors.grey,
-                                children: [
-                                  CachedNetworkImage(
-                                      imageUrl:
-                                          viewModel.featuredProductsWidgets[0]),
-                                  CachedNetworkImage(
-                                      imageUrl:
-                                          viewModel.featuredProductsWidgets[1]),
-
-                                ],
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    ),
+                    )
+                    // FutureBuilder(
+                    //   future: Future.delayed(
+                    //     Duration(seconds: 10),
+                    //   ),
+                    //   builder: (con, snap) {
+                    //     if (snap.connectionState == ConnectionState.waiting) {
+                    //       return Center(
+                    //         child: Container(
+                    //             width: double.infinity,
+                    //             height: 300,
+                    //             child: CardShimmer()),
+                    //       );
+                    //     } else {
+                    //       return ClipRRect(
+                    //         borderRadius: BorderRadius.circular(16),
+                    //         child: Padding(
+                    //           padding: const EdgeInsets.all(8.0),
+                    //           child: ImageSlideshow(
+                    //             width: double.infinity,
+                    //             height: 300,
+                    //             isLoop: true,
+                    //             // initialPage: 0
+                    //             autoPlayInterval: 2000,
+                    //             indicatorColor: Colors.blue,
+                    //             indicatorBackgroundColor: Colors.grey,
+                    //             children: [
+                    //               CachedNetworkImage(
+                    //                   imageUrl:
+                    //                       viewModel.featuredProductsWidgets[0]),
+                    //               CachedNetworkImage(
+                    //                   imageUrl:
+                    //                       viewModel.featuredProductsWidgets[1]),
+                    //
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       );
+                    //     }
+                    //   },
+                    // ),
+                    ,
+                    //Featured Products // CateGories
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text("Seach By Category",style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold
-                          ),),
+                          padding: const EdgeInsets.only(left: 16),
+                          child: Text(
+                            "All Featured",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
                         ),
+                        Spacer(),
+                        ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.black,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8))),
+                            onPressed: () {},
+                            child: Icon(Icons.arrow_forward_ios_rounded)),
+                        ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.black,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8))),
+                            child: Icon(Icons.filter_alt_outlined)),
                       ],
                     ),
                     //Categoiries
                     Container(
                         constraints: BoxConstraints(
-                            maxHeight: 165, maxWidth: size.width),
+                            maxHeight: 175, maxWidth: size.width),
                         child: FutureBuilder(
                           future: viewModel.productsController.getCategories(),
                           builder: (con, snap) {
@@ -218,7 +271,7 @@ class Home extends StatelessWidget {
                                                         -1), // changes position of shadow
                                                   ),
                                                 ],
-                                                color: Colors.grey,
+                                                // color: Colors.grey,
                                                 borderRadius:
                                                     BorderRadius.circular(50)),
                                             child: ClipRRect(
@@ -229,8 +282,8 @@ class Home extends StatelessWidget {
                                                     .categories[index]
                                                     .image[0]
                                                     .src,
-                                                fit: BoxFit.fitWidth,
-                                                width: 50,
+                                                fit: BoxFit.cover,
+                                                width: 100,
                                               ),
                                             ),
                                           ),
@@ -250,14 +303,43 @@ class Home extends StatelessWidget {
                             }
                           },
                         )),
+                    Container(
+                      constraints:
+                          BoxConstraints(maxHeight: 300, maxWidth: size.width),
+                      child: FutureBuilder(
+                        future: null,
+                        // viewModel.productsController
+                        //     .getFeaturedProducts() ??
+                        builder: (con, snap) {
+                          if (snap.connectionState == ConnectionState.waiting) {
+                            return Center(
+                              child: CardListViewShimmer(),
+                            );
+                          } else {
+                            return Container(
+                              width: Get.width - 32,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                    //onSale Products
+
+                    //Products
                     Row(
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text("Products",style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold
-                          ),),
+                          child: Text(
+                            "Products",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ],
                     ),
@@ -318,10 +400,11 @@ class Home extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text("Products",style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold
-                          ),),
+                          child: Text(
+                            "Products",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ],
                     ),

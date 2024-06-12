@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:woo_test/Controllers/CouponsController.dart';
 import 'package:woo_test/Controllers/SharedPreferencesController.dart';
 import 'package:woo_test/Controllers/WpController.dart';
 import 'package:woo_test/ViewModels/CartViewModel.dart';
@@ -16,6 +17,7 @@ class AppBindings extends Bindings {
     Get.put(ApiClient());
     Get.put(SharedPreferencesController());
     Get.put(ProductController());
+    Get.put(CouponsController());
     Get.put(WpController());
 
     Get.lazyPut(() => CartViewModel());

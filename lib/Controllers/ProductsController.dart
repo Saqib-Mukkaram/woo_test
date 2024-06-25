@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:woo_test/Models/Categories.dart';
+import 'package:woo_test/Models/ProductVariations.dart';
 import 'package:woo_test/Models/Products.dart';
 import 'package:woo_test/data/API.dart';
 import 'package:woo_test/res/Endpoints.dart';
@@ -11,11 +12,15 @@ class ProductController extends GetxController {
   final _products = RxList<Products>();
   final _productsByCategory = RxList<Products>();
   final _categories = RxList<Categories>();
+  final _productsVariations = RxList<ProductVariations>();
   var pageNum = 1;
   var isLoading = false.obs;
   var totalPages = 11;
   var url = '/wp-json/wc/v3/products?page=';
   var nextUrl = '';
+
+  //getter for productsVariations
+  RxList<ProductVariations> get productsVariations => _productsVariations;
 
   //get products
   RxList<Products> get products => _products;
@@ -48,6 +53,23 @@ class ProductController extends GetxController {
         }
       }
       isLoading = false.obs;
+    });
+  }
+
+  Future getProductsVariations(int id) async {
+    await ApiClient.get("wp-json/wc/v3/products/${id.toString()}/variations")
+        .then((v) async {
+      List<dynamic> encodedVariations = jsonDecode(v.body);
+      for (var element in encodedVariations) {
+        var x = ProductVariations.fromJson(element);
+        try {
+          print("variation added without any errors");
+          _productsVariations.add(x);
+          _productsVariations.refresh();
+        } catch (e) {
+          print("variation not added ${element['name']}");
+        }
+      }
     });
   }
 
@@ -98,7 +120,7 @@ class ProductController extends GetxController {
     print("Length of the products: ${_products.length}");
   }
 
-  // @override
+// @override
   Future getNextProducts() async {
     isLoading = true.obs;
     if (pageNum <= totalPages) {
@@ -108,18 +130,21 @@ class ProductController extends GetxController {
         List<dynamic> encodedProducts = jsonDecode(value.body);
         encodedProducts.forEach((element) {
           // print(product.toString());
-          if (element['status'] == 'publish') {
-            try {
-              var x = Products.fromJson(element);
-              // kDebugMode ? print("product added without any errors") : null;
-              _products.add(x);
-              _products.refresh();
-            } catch (e) {
-              kDebugMode ? print("${element['name']} \n$e") : null;
-            }
-          } else {
-            print("product not added ${element['name']}");
+          try {
+            var x = Products.fromJson(element);
+            // kDebugMode ? print("product added without any errors") : null;
+            _products.add(x);
+            _products.refresh();
+          } catch (e) {
+            kDebugMode ? print("${element['name']} \n$e") : null;
           }
+          print("product added ${element['name']}");
+
+          // if (element['status'] == 'draft') {
+
+          // } else {
+          //   print("product not added ${element['name']}");
+          // }
         });
       });
       pageNum++;

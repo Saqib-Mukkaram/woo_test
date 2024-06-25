@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:woo_test/Models/Products.dart';
@@ -5,6 +6,7 @@ import 'package:woo_test/Models/Products.dart';
 // import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:woo_test/ViewModels/CartViewModel.dart';
+import 'package:woo_test/ViewModels/ProductViewModel.dart';
 
 class ProductPage extends StatelessWidget {
   final Products product;
@@ -12,6 +14,7 @@ class ProductPage extends StatelessWidget {
   ProductPage({super.key, required this.product});
 
   final _cartViewModel = Get.find<CartViewModel>();
+  final _viewModel = Get.find<ProductsViewModel>();
 
   var addedToCart = false.obs;
   var favoriteTapped = false.obs;
@@ -92,14 +95,16 @@ class ProductPage extends StatelessWidget {
                               onPressed: () {
                                 favoriteTapped.value = !favoriteTapped.value;
                               },
-                              icon: Obx(() => favoriteTapped.value
-                                  ? Icon(
-                                      Icons.favorite,
-                                      color: Colors.red,
-                                    )
-                                  : Icon(
-                                      Icons.favorite_border,
-                                    )),
+                              icon: Obx(
+                                () => favoriteTapped.value
+                                    ? Icon(
+                                        Icons.favorite,
+                                        color: Colors.red,
+                                      )
+                                    : Icon(
+                                        Icons.favorite_border,
+                                      ),
+                              ),
                             ),
                           )
                         ],
@@ -107,6 +112,112 @@ class ProductPage extends StatelessWidget {
                     ],
                   ),
                 ),
+                Container(
+                    width: Get.width,
+                    height: 190,
+                    margin: EdgeInsets.only(
+                        top: 5, bottom: 10, left: 12, right: 12),
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 1))
+                        ]),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "More related to this product",
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        FutureBuilder(
+                          future: _viewModel.getVariationsById(product.id),
+                          builder: (c, snap) {
+                            if (snap.connectionState ==
+                                ConnectionState.waiting) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [CircularProgressIndicator()],
+                              );
+                            }
+                            if (_viewModel.productsVariations.isNotEmpty) {
+                              return Obx(() => Container(
+
+
+                                    constraints: BoxConstraints(
+                                      minWidth:
+                                          MediaQuery.sizeOf(context).width * .9,
+                                      maxHeight: 150,
+                                    ),
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount:
+                                          _viewModel.productsVariations.length,
+                                      itemBuilder: (con, item) {
+                                        return Obx(
+                                          () => Container(
+                                            width: 150,
+                                            height: 125,
+                                            margin: EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(10),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey.withOpacity(0.2),
+                                                    spreadRadius: 5,
+                                                    blurRadius: 7,
+                                                    offset: Offset(0, 1),
+                                                  )
+                                                ]),
+                                            // color: Colors.red,
+
+                                            child: Column(
+                                              children: [
+                                                ClipRRect(
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: _viewModel
+                                                        .productsVariations[
+                                                            item]
+                                                        .image
+                                                        .src,
+                                                    fit: BoxFit.cover,
+                                                    width: 100,
+                                                    height: 100,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  "€${_viewModel.productsVariations[item].price}",
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.blueAccent),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ));
+                            } else {
+                              return Center(
+                                child: Text("No Variations For this Product."),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    )),
                 Container(
                   margin:
                       EdgeInsets.only(top: 5, bottom: 10, left: 12, right: 12),

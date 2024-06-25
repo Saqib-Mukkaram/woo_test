@@ -7,7 +7,7 @@ class EndPoints {
   static const String CATEGORIES = "/wp-json/wc/v3/products/categories";
   static const String PRODUCTS_BY_PAGE = "/wp-json/wc/v3/products?page=";
   static const String PRODUCT_BY_VARIATION =
-      " /wp-json/wc/v3/products/<product_id>/variations/<id>";
+      " /wp-json/wc/v3/products/<product_id>/variations";
 
   //Coupons
   static const String COUPONS = "/wp-json/wc/v3/coupons";

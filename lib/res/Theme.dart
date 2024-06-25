@@ -3,6 +3,18 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData primaryTheme = ThemeData(
     scaffoldBackgroundColor: Color(0xffFDFDFD),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.blue,
+      elevation: 8,
+      focusElevation: 0,
+      hoverElevation: 0,
+      highlightElevation: 0,
+      disabledElevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50),
+      ),
+    ),
     searchBarTheme: SearchBarThemeData(
       backgroundColor: WidgetStateProperty.all(Colors.white),
       surfaceTintColor: WidgetStateProperty.all(Colors.white),
@@ -34,7 +46,6 @@ class AppTheme {
       elevation: 0,
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      // elevation: 8,
       backgroundColor: Colors.white,
       unselectedItemColor: Colors.grey,
       unselectedIconTheme: IconThemeData(color: Colors.grey),
@@ -45,9 +56,10 @@ class AppTheme {
       landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
       showSelectedLabels: true,
       showUnselectedLabels: true,
-      elevation: 0,
+      elevation: 8,
       mouseCursor: MaterialStateMouseCursor.clickable,
       type: BottomNavigationBarType.shifting,
     ),
+  
   );
 }

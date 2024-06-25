@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:woo_test/Controllers/WpController.dart';
 import 'package:woo_test/Views/Home.dart';
+import 'package:woo_test/Views/Login/Login.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({super.key});

@@ -38,7 +38,8 @@ class ProductCard extends StatelessWidget {
       builder: (con, sizeLimit) {
         return Stack(children: [
           Container(
-            constraints: BoxConstraints(maxWidth: 200),
+            constraints:
+                BoxConstraints(maxWidth: 200, maxHeight: sizeLimit.maxHeight),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
@@ -53,32 +54,63 @@ class ProductCard extends StatelessWidget {
               children: [
                 Hero(
                   tag: id,
-                  child: CachedNetworkImage(
-                    imageUrl: "${image[0].src}",
-                    fit: BoxFit.contain,
-                    width: sizeLimit.maxWidth,
-                    height: 175,
+                  child: ClipRRect(
+                    child: CachedNetworkImage(
+                      imageUrl: "${image[0].src}",
+                      fit: BoxFit.contain,
+                      width: sizeLimit.maxWidth,
+                      height: 170,
+                    ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("$name",
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: TextStyle(
-                          // color: Colors.blue,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400)),
+                  child: Text(
+                    "$name",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: TextStyle(
+                        // color: Colors.blue,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400),
+                  ),
                 ),
+                product.onSale
+                    ? Row(
+                        children: [
+                          SizedBox(
+                            width: 5,
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              text: 'on Sale! ',
+                              style: TextStyle(color: Colors.red),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: "\$${price}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blue)),
+                              ],
+                            ),
+                          )
+                        ],
+                      )
+                    : SizedBox(),
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(
+                          left: 8, right: 8, bottom: 0, top: 8),
                       child: Text("\$$price",
                           style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400)),
+                            decoration: product.onSale
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none,
+                            color: Colors.blue,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                          )),
                     ),
                   ],
                 )
@@ -109,37 +141,37 @@ class ProductCard extends StatelessWidget {
                     )),
             ),
           ),
-          Positioned(
-            top: 5,
-            right: 5,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: IconButton(
-                onPressed: () {
-                  //Add to Cart
-                  if (_cartViewModel.cartItems.containsKey(product)) {
-                    _cartViewModel.cartItems[product] =
-                        _cartViewModel.cartItems[product]! + 1;
-                    addedToCart.value = true;
-                  } else {
-                    //remove from the cart
-                    _cartViewModel.cartItems.remove(product);
-                    addedToCart.value = false;
-                  }
-                },
-                icon: Obx(() => addedToCart.value
-                    ? Icon(
-                        Icons.remove_shopping_cart,
-                        color: Colors.blue,
-                      )
-                    : Icon(
-                        Icons.add_shopping_cart,
-                      )),
-              ),
-            ),
-          ),
+          // Positioned(
+          //   top: 5,
+          //   right: 5,
+          //   child: Container(
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(25),
+          //     ),
+          //     child: IconButton(
+          //       onPressed: () {
+          //         //Add to Cart
+          //         if (_cartViewModel.cartItems.containsKey(product)) {
+          //           _cartViewModel.cartItems[product] =
+          //               _cartViewModel.cartItems[product]! + 1;
+          //           addedToCart.value = true;
+          //         } else {
+          //           //remove from the cart
+          //           _cartViewModel.cartItems.remove(product);
+          //           addedToCart.value = false;
+          //         }
+          //       },
+          //       icon: Obx(() => addedToCart.value
+          //           ? Icon(
+          //               Icons.remove_shopping_cart,
+          //               color: Colors.blue,
+          //             )
+          //           : Icon(
+          //               Icons.add_shopping_cart,
+          //             )),
+          //     ),
+          //   ),
+          // ),
         ]);
       },
     );

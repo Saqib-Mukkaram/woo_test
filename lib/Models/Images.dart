@@ -1,19 +1,26 @@
-
-class Images{
+class Images {
   final int id;
   final String src;
 
-  //constructor
-  Images({
+  // Constructor
+  const Images({
     required this.id,
-    required this.src
+    required this.src,
   });
 
-  //fromjson
-  factory Images.fromJson(Map<String, dynamic> json){
+  // fromJson factory method
+  factory Images.fromJson(Map<String, dynamic> json) {
     return Images(
       id: json['id'],
-      src: json['src']
+      src: json['src'],
     );
+  }
+
+  // toJson method
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'src': src,
+    };
   }
 }

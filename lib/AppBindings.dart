@@ -10,6 +10,8 @@ import 'package:woo_test/ViewModels/RegisterViewModel.dart';
 import 'package:woo_test/data/API.dart';
 
 import 'Controllers/ProductsController.dart';
+import 'ViewModels/LoginViewModel.dart';
+import 'ViewModels/ProductViewModel.dart';
 
 class AppBindings extends Bindings {
   @override
@@ -24,6 +26,8 @@ class AppBindings extends Bindings {
     Get.lazyPut(() => RegisterViewModel());
     Get.lazyPut(() => CategoryViewModel());
     Get.lazyPut(() => HomeViewModel());
+    Get.lazyPut(() => ProductsViewModel());
     Get.lazyPut(() => FavoritesViewModel());
+    Get.lazyPut(() => LoginViewModel());
   }
 }

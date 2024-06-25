@@ -14,6 +14,6 @@ class CouponsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getCoupons();
+    // getCoupons();
   }
 }

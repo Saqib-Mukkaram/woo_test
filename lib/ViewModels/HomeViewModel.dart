@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-
 import 'package:woo_test/Controllers/ProductsController.dart';
 import 'package:woo_test/Models/Categories.dart';
 import 'package:woo_test/Models/Products.dart';

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart' as getdart;
+
 // import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 
@@ -64,6 +65,20 @@ class ApiClient extends getdart.GetxController {
     try {
       var response = await http.get(Uri.parse(baseUrl + url), headers: headers);
       return response;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  //post method
+  static Future<dynamic> post(String url, dynamic data) async {
+    try {
+      var response = await http.post(Uri.parse(baseUrl + url),
+          headers: headers, body: jsonEncode(data));
+      if (response.statusCode > 200 && response.statusCode < 300) {
+        return response;
+      }
     } catch (e) {
       print(e);
       return null;

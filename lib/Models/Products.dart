@@ -92,4 +92,29 @@ class Products {
       ),
     );
   }
+
+  //To Json
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'slug': slug,
+        'permalink': permalink,
+        'date_created': dateCreated,
+        'date_modified': dateModified,
+        'type': type,
+        'status': status,
+        'featured': featured,
+        'catalog_visibility': catalogVisibility,
+        'description': description,
+        'short_description': shortDescription,
+        'price': price,
+        'regular_price': regularPrice,
+        'sale_price': salePrice,
+        'on_sale': onSale,
+        'purchaseable': purchaseable,
+        'total_sales': totalSales,
+        // 'category': category.toJson(),
+        // 'tags': tags.map((tag) => tag.toJson()).toList(),
+        'images': images.map((image) => image.toJson()).toList(),
+      };
 }

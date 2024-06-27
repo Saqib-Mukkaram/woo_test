@@ -2,9 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class RegisterViewModel extends GetxController {
-
-
-
   var _email = TextEditingController().obs;
   var _password = TextEditingController().obs;
   var _confirmPassword = TextEditingController().obs;
@@ -15,11 +12,17 @@ class RegisterViewModel extends GetxController {
 
   //Getters
   Rx<TextEditingController> get email => _email;
+
   Rx<TextEditingController> get password => _password;
+
   Rx<TextEditingController> get confirmPassword => _confirmPassword;
+
   Rx<TextEditingController> get firstName => _firstName;
+
   Rx<TextEditingController> get lastName => _lastName;
+
   Rx<TextEditingController> get phone => _phone;
+
   Rx<TextEditingController> get address => _address;
 
   @override
@@ -28,9 +31,15 @@ class RegisterViewModel extends GetxController {
     super.onInit();
   }
 
-
-
-
+  // Future<void> registerUser() {
+  //   // Register the User with the Woocommerce
+  //   // await ApiClient.post("/wp-json/wc/v3/customers", user.toJson())
+  //   //     .then((v) async {
+  //   //   print(v);
+  //   //   return true;
+  //   // });
+  //   return Future.value();
+  // }
 }
 // }
 // "email": "john.doe@example.com",

@@ -29,92 +29,85 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        extendBodyBehindAppBar: true,
-        resizeToAvoidBottomInset: true,
+      extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
 
-        // backgroundColor: Colors.transparent,
-        extendBody: true,
-        bottomNavigationBar: CustomBottomNavigationBarWidget(
-          selectedIndex: viewModel.selectedIndex,
-        ),
-        drawer: Drawer(
-          width: Get.width / 2,
-          child: ListView(
-            children: [
-              DrawerHeader(
-                child: Column(
-                  children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundImage: CachedNetworkImageProvider(
-                          "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "John Doe",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text("Josh"),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-        appBar: AppBar(
-          leadingWidth: 50,
-          title: Image.asset(
-            "assets/imgs/logo_sample.png",
-            fit: BoxFit.contain,
-            // width: 100,
-            height: 40,
-          ),
-          centerTitle: true,
-          // leading: IconButton(
-          //   icon: Icon(Icons.menu),
-          //   onPressed: () {},
-          // ),
-          // actions: [
-          //   CircleAvatar(),
-          //   SizedBox(
-          //     width: 10,
-          //   )
-          // ],
-        ),
-        body: Obx(
-              () => pages[viewModel.selectedIndex.value],
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: Column(
+      // backgroundColor: Colors.transparent,
+
+      bottomNavigationBar: CustomBottomNavigationBarWidget(
+        selectedIndex: viewModel.selectedIndex,
+      ),
+      drawer: Drawer(
+        width: Get.width / 2,
+        child: ListView(
           children: [
-            Spacer(),
-            FloatingActionButton(
-              elevation: 4,
-              onPressed: () {
-                Get.to(
-                  Cart(),
-                  // transition: Transition.topLevel,
-                );
-              },
-              backgroundColor: Colors.white,
-              child: Icon(
-                Icons.add_shopping_cart,
-                color: Colors.blue,
+            DrawerHeader(
+              child: Column(
+                children: [
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: CachedNetworkImageProvider(
+                        "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "John Doe",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text("Josh"),
+                ],
               ),
-            ),
-            SizedBox(
-              height: 30,
             )
           ],
-        ));
+        ),
+      ),
+      appBar: AppBar(
+        leadingWidth: 50,
+        title: Image.asset(
+          "assets/imgs/logo_sample.png",
+          fit: BoxFit.contain,
+          // width: 100,
+          height: 40,
+        ),
+        centerTitle: true,
+        // leading: IconButton(
+        //   icon: Icon(Icons.menu),
+        //   onPressed: () {},
+        // ),
+        // actions: [
+        //   CircleAvatar(),
+        //   SizedBox(
+        //     width: 10,
+        //   )
+        // ],
+      ),
+      body: Obx(
+        () => pages[viewModel.selectedIndex.value],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        elevation: 4,
+        onPressed: () {
+          Get.to(
+            Cart(),
+            // transition: Transition.topLevel,
+          );
+        },
+        backgroundColor: Colors.white,
+        child: Icon(
+          Icons.add_shopping_cart,
+          color: Colors.blue,
+        ),
+      ),
+    );
   }
 }
 
@@ -122,13 +115,10 @@ class Home extends StatelessWidget {
   Home({super.key});
 
   HomeViewModel viewModel = Get.find();
-  final ScrollController _scrollController = ScrollController(
-
-  );
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-
     final Size size = MediaQuery.sizeOf(context);
     return SafeArea(
       child: RefreshIndicator(
@@ -139,7 +129,7 @@ class Home extends StatelessWidget {
         child: SingleChildScrollView(
           controller: _scrollController,
           scrollDirection: Axis.vertical,
-          reverse: true,
+          // reverse: true,
           child: Column(
             children: [
               Padding(
@@ -161,7 +151,7 @@ class Home extends StatelessWidget {
                     child: Text(
                       "All Featured",
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
                   Spacer(),
@@ -192,7 +182,7 @@ class Home extends StatelessWidget {
               // Categories
               Container(
                 constraints:
-                BoxConstraints(maxHeight: 175, maxWidth: size.width),
+                    BoxConstraints(maxHeight: 175, maxWidth: size.width),
                 child: FutureBuilder(
                   future: viewModel.productsController.getCategories(),
                   builder: (con, snap) {
@@ -200,13 +190,12 @@ class Home extends StatelessWidget {
                       return ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: 4,
-                        itemBuilder: (con, index) =>
-                            Column(
-                              children: [
-                                SizedBox(height: 10),
-                                CategoryShimmer(),
-                              ],
-                            ),
+                        itemBuilder: (con, index) => Column(
+                          children: [
+                            SizedBox(height: 10),
+                            CategoryShimmer(),
+                          ],
+                        ),
                       );
                     } else {
                       return ListView.builder(
@@ -268,7 +257,7 @@ class Home extends StatelessWidget {
               // Banner
               Container(
                 constraints:
-                BoxConstraints(maxHeight: 300, maxWidth: size.width),
+                    BoxConstraints(maxHeight: 300, maxWidth: size.width),
                 child: FutureBuilder(
                   future: null,
                   builder: (con, snap) {
@@ -290,7 +279,7 @@ class Home extends StatelessWidget {
               SizedBox(height: 10),
               Container(
                 constraints:
-                BoxConstraints(maxHeight: 100, maxWidth: size.width),
+                    BoxConstraints(maxHeight: 100, maxWidth: size.width),
                 child: FutureBuilder(
                   future: null,
                   builder: (con, snap) {
@@ -318,7 +307,7 @@ class Home extends StatelessWidget {
                     child: Text(
                       "Products",
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -335,13 +324,15 @@ class Home extends StatelessWidget {
                     return Column(
                       children: [
                         Obx(
-                              () =>
-                              Container(
-                                constraints: BoxConstraints(
-                                  maxHeight: 305,
-                                  maxWidth: size.width,
-                                ),
-                                child: ListView.builder(
+                          () => Container(
+                            constraints: BoxConstraints(
+                              maxHeight: 305,
+                              maxWidth: size.width,
+                            ),
+                            //List Starts Here
+                            child: Stack(
+                              children: [
+                                ListView.builder(
                                   controller: viewModel.scrollController.value,
                                   scrollDirection: Axis.horizontal,
                                   itemCount: viewModel.products.length,
@@ -353,29 +344,64 @@ class Home extends StatelessWidget {
                                           Get.to(
                                             opaque: false,
                                             ProductPage(
-                                              product: viewModel
-                                                  .products[index],
+                                              product:
+                                                  viewModel.products[index],
                                             ),
-                                            transition: Transition
-                                                .circularReveal,
-                                            duration: Duration(
-                                                milliseconds: 1000),
+                                            transition:
+                                                Transition.circularReveal,
+                                            duration:
+                                                Duration(milliseconds: 1000),
                                           );
                                         },
                                         child: ProductCard(
                                           id: viewModel.products[index].id,
                                           name: viewModel.products[index].name,
-                                          price: viewModel.products[index]
-                                              .price,
-                                          image: viewModel.products[index]
-                                              .images,
+                                          price:
+                                              viewModel.products[index].price,
+                                          image:
+                                              viewModel.products[index].images,
                                           product: viewModel.products[index],
                                         ),
                                       ),
                                     );
                                   },
                                 ),
-                              ),
+                                Positioned(
+                                  left: 0,
+                                  child: Center(
+                                    child: Container(
+                                      height: 300,
+                                      width: 30,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          var scrollController =
+                                              viewModel.scrollController.value;
+                                          double offset =
+                                              scrollController.offset;
+                                          double nextOffset = offset -
+                                              200.0; // Adjust this value as needed
+                                          if (nextOffset >=
+                                              scrollController
+                                                  .position.minScrollExtent) {
+                                            scrollController.animateTo(
+                                              nextOffset,
+                                              duration:
+                                                  Duration(milliseconds: 500),
+                                              curve: Curves.easeInOut,
+                                            );
+                                          }
+                                        },
+                                        icon: Icon(
+                                          Icons.arrow_back_ios_rounded,
+                                          color: Colors.blue,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                         ElevatedButton(
                           onPressed: () {
@@ -403,7 +429,7 @@ class Home extends StatelessWidget {
               SizedBox(height: 20),
               Container(
                 constraints:
-                BoxConstraints(maxHeight: 100, maxWidth: size.width),
+                    BoxConstraints(maxHeight: 100, maxWidth: size.width),
                 child: FutureBuilder(
                   future: null,
                   builder: (con, snap) {
@@ -428,7 +454,7 @@ class Home extends StatelessWidget {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 16),
                 constraints:
-                BoxConstraints(maxHeight: 300, maxWidth: size.width),
+                    BoxConstraints(maxHeight: 300, maxWidth: size.width),
                 child: FutureBuilder(
                   future: null,
                   builder: (con, snap) {
@@ -480,7 +506,7 @@ class Home extends StatelessWidget {
                     child: Text(
                       "Sponsored Products",
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -488,7 +514,7 @@ class Home extends StatelessWidget {
               SizedBox(height: 10),
               Container(
                 constraints:
-                BoxConstraints(maxWidth: Get.width, maxHeight: 300),
+                    BoxConstraints(maxWidth: Get.width, maxHeight: 300),
                 margin: EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
                   color: Colors.grey,
@@ -503,7 +529,7 @@ class Home extends StatelessWidget {
                     child: Text(
                       "up to 50% off",
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],

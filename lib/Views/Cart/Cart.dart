@@ -1,13 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
 // import 'package:woo_test/CustomWidgets/CartCard.dart';
 import 'package:woo_test/ViewModels/CartViewModel.dart';
+import 'package:woo_test/Views/Checkout/Checkout.dart';
 
 class Cart extends StatelessWidget {
   Cart({super.key});
 
   var _cartViewModel = Get.find<CartViewModel>();
+  var formatter = NumberFormat('#,##,###', 'en_US');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,7 +162,7 @@ class Cart extends StatelessWidget {
                                             children: <TextSpan>[
                                               TextSpan(
                                                 text:
-                                                    '${_cartViewModel.cartItems.keys.elementAt(index).price}',
+                                                    '\$${formatter.format(_cartViewModel.cartItems.keys.elementAt(index).price)}',
                                                 style: const TextStyle(
                                                     color: Colors.blue),
                                               ),
@@ -180,12 +185,7 @@ class Cart extends StatelessWidget {
                                                   "Qty: ${_cartViewModel.cartItems.values.elementAt(index)}"),
                                             ),
                                             IconButton(
-                                              onPressed: () {
-                                                _cartViewModel.increaseQuantity(
-                                                    _cartViewModel
-                                                        .cartItems.keys
-                                                        .elementAt(index));
-                                              },
+                                              onPressed: () {},
                                               icon: const Icon(Icons.add),
                                             )
                                           ],
@@ -217,19 +217,34 @@ class Cart extends StatelessWidget {
             // ],
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Obx(
                 () => Text(
-                  "Total Price: ${_cartViewModel.totalPrice}",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  "Total Price: \$${formatter.format(_cartViewModel.totalPrice.toInt())}",
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
                 ),
               ),
+              SizedBox(
+                width: 10,
+              ),
               ElevatedButton(
-                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      minimumSize: Size(150, 50)),
+                  onPressed: () {
+                    // _cartViewModel.createOrder();
+                    Get.to(CheckoutScreen());
+                  },
                   child: Text(
                     "Checkout",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ))
             ],
           ),

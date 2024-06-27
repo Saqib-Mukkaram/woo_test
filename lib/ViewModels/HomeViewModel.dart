@@ -14,13 +14,13 @@ class HomeViewModel extends GetxController {
 
   @override
   void onInit() {
-    scrollController.value.addListener(() {
+    scrollController.value.addListener(() async {
       if (scrollController.value.position.pixels ==
           scrollController.value.position.maxScrollExtent) {
         // At the bottom of the list, load more products
 
         print("At the Bottom of the List");
-        productsController.getNextProducts();
+        await productsController.getNextProducts();
       }
     });
     super.onInit();

@@ -23,6 +23,9 @@ class ProductsViewModel extends GetxController {
   RxList<Products> get products => _productsController.products;
 
   //Getter Products Variations
-  RxList<ProductVariations> get productsVariations =>
-      _productsController.productsVariations;
+  RxList<ProductVariations> get productsVariations {
+    // _productsController.productsVariations.clear();
+    refresh();
+    return _productsController.productsVariations;
+  }
 }

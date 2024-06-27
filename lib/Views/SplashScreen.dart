@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:woo_test/Controllers/WpController.dart';
 import 'package:woo_test/Views/Home.dart';
 import 'package:woo_test/Views/Login/Login.dart';
+import 'package:woo_test/Views/Register/Register.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({super.key});
@@ -17,7 +18,9 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     Future.delayed(Duration(seconds: 2), () async {
       // Get.find<WpController>().fetchData();
-      Get.off(HomeScreen());
+      Get.off(
+        HomeScreen(),
+      );
     });
 
     super.initState();

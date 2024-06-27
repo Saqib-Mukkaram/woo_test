@@ -1,3 +1,6 @@
+import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 import 'Attributes.dart';
 import 'Images.dart';
 
@@ -16,10 +19,12 @@ class ProductVariations {
   final int? stockQuantity;
   final String sku;
   final Images image;
+  Rx<bool> selected = false.obs;
+
   // final Attributes attributes;
 
   // Constructor
-  const ProductVariations({
+  ProductVariations({
     required this.id,
     this.permalink,
     required this.dateCreated,
@@ -34,8 +39,9 @@ class ProductVariations {
     this.stockQuantity,
     required this.sku,
     required this.image,
-    // required this.attributes,
-  });
+  }) {
+    selected = false.obs;
+  }
 
   // fromJson factory method
   factory ProductVariations.fromJson(Map<String, dynamic> json) {

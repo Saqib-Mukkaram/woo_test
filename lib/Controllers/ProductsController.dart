@@ -33,7 +33,7 @@ class ProductController extends GetxController {
 
   @override
   void onInit() {
-    getNextProducts();
+    // getNextProducts();
     super.onInit();
   }
 
@@ -57,12 +57,14 @@ class ProductController extends GetxController {
   }
 
   Future getProductsVariations(int id) async {
+    _productsVariations.clear();
     await ApiClient.get("wp-json/wc/v3/products/${id.toString()}/variations")
         .then((v) async {
       List<dynamic> encodedVariations = jsonDecode(v.body);
       for (var element in encodedVariations) {
         var x = ProductVariations.fromJson(element);
         try {
+          print("$element ");
           print("variation added without any errors");
           _productsVariations.add(x);
           _productsVariations.refresh();
@@ -81,7 +83,9 @@ class ProductController extends GetxController {
         var x = Categories.fromJson(element);
         try {
           kDebugMode ? print("category added without any errors") : null;
-          _categories.add(x);
+          // remove duplicates
+          if (!_categories.contains(x)) _categories.add(x);
+          // _categories.add(x);
           _categories.refresh();
         } catch (e) {
           print("category not added ${element['name']}");
@@ -138,10 +142,17 @@ class ProductController extends GetxController {
           } catch (e) {
             kDebugMode ? print("${element['name']} \n$e") : null;
           }
-          print("product added ${element['name']}");
-
-          // if (element['status'] == 'draft') {
-
+          // if (element['status'] == 'publish') {
+          //   try {
+          //     var x = Products.fromJson(element);
+          //     // kDebugMode ? print("product added without any errors") : null;
+          //     //remove duplicates
+          //     if (!_products.contains(x)) _products.add(x);
+          //     _products.refresh();
+          //   } catch (e) {
+          //     kDebugMode ? print("${element['name']} \n$e") : null;
+          //   }
+          //   print("product added ${element['name']}");
           // } else {
           //   print("product not added ${element['name']}");
           // }
